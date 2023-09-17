@@ -1,13 +1,10 @@
 package com.example.mentor.controller;
 
 import com.example.mentor.dao.Dao;
-import com.example.mentor.dao.MentorDao;
-import com.example.mentor.model.Mentor;
-import com.example.mentor.util.HibernateUtil;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.SessionFactory;
+import com.example.mentor.entity.Mentor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,13 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MentorController {
 
     @Autowired
-    private  MentorDao mentorDao;
     private Dao<Long, Mentor> mentorDao;
-
-    private SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
-
     @GetMapping("/info_mentor")
-    String findAll() {
+    String findAll(Model model) {
+        model.addAttribute("mentors", mentorDao.findAll());
         return "mentor";
      }
 }
