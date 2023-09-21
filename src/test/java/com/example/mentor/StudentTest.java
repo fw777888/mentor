@@ -3,7 +3,6 @@ package com.example.mentor;
 import com.example.mentor.dao.Dao;
 import com.example.mentor.entity.Student;
 import org.hibernate.PersistentObjectException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,14 +14,12 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Sql({"/schema.sql", "/data.sql"})
 @DisplayName("Тестирование StudentDao")
 public class StudentTest {
-
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(StudentTest.class);
     private final Dao<Long, Student> studentDao;
     private Student studentVasya = Student
@@ -31,6 +28,7 @@ public class StudentTest {
             .lastName("Vasilev")
             .phone("8765432345")
             .build();
+
     @Autowired
     public StudentTest(Dao<Long, Student> studentDao) {
         this.studentDao = studentDao;
@@ -45,7 +43,7 @@ public class StudentTest {
 
             studentDao.save(studentVasya);
             final var studentVasyaOptional = studentDao
-                    .findBYId(2L)
+                    .findBYId(3L)
                     .orElseThrow(() -> new NoSuchElementException(
                             "Object is not saved in database"));
 
@@ -71,9 +69,12 @@ public class StudentTest {
         log.info("negative testing save started");
 
         studentVasya.setId(1L);
-        final var exception = assertThrows(InvalidDataAccessApiUsageException.class,
+        final var exception =
+                assertThrows(InvalidDataAccessApiUsageException.class,
                 () -> studentDao.save(studentVasya), "Incorrect exception");
-        assertInstanceOf(PersistentObjectException.class, exception.getCause(), "Incorrect exception");
+
+        assertInstanceOf(PersistentObjectException.class, exception.getCause(),
+                "Incorrect exception");
 
         log.info("test negativeTestingSave successfully completed");
     }
@@ -87,12 +88,12 @@ public class StudentTest {
         assertEquals(students.size(), 2);
         assertEquals(students.get(0).getId(), 1, "Id Anton Antonov" );
         assertEquals(students.get(1).getId(), 2, "Id Mihail Mihailov" );
-        assertEquals(students.get(0).getName(), 1, "Anton" );
-        assertEquals(students.get(1).getName(), 2, "Mihail" );
-        assertEquals(students.get(0).getLastName(), 1, "Antonov" );
-        assertEquals(students.get(1).getLastName(), 2, "Mihailov" );
-        assertEquals(students.get(0).getPhone(), 1, "23456765435" );
-        assertEquals(students.get(1).getPhone(), 2, "45632765" );
+        assertEquals(students.get(0).getName(), "Anton", "Antonovs name" );
+        assertEquals(students.get(1).getName(), "Mihail", "Mihailovs name" );
+        assertEquals(students.get(0).getLastName(), "Antonov", "Antonov is correct lastname" );
+        assertEquals(students.get(1).getLastName(), "Mihailov", "Mihailov is correct lastname" );
+        assertEquals(students.get(0).getPhone(), "23456765435", " phone 23456765435" );
+        assertEquals(students.get(1).getPhone(), "45632765", "phone 45632765" );
     }
 
 }

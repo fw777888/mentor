@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Sql({"/schema.sql", "/data.sql" })
 @DisplayName("Тестирование MentorDao")
+
 public class MentorTest {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MentorTest.class);
     private final Dao<Long, Mentor> mentorDao;
@@ -43,7 +44,7 @@ public class MentorTest {
 
             mentorDao.save(mentorJohn);
             final var mentorJohnOptional = mentorDao
-                    .findBYId(2L)
+                    .findBYId(3L)
                     .orElseThrow(() -> new NoSuchElementException(
                             "Объект не сохранился в базу данных"));
 
@@ -73,7 +74,8 @@ public class MentorTest {
                 assertThrows(InvalidDataAccessApiUsageException.class,
                         () -> mentorDao.save(mentorJohn), "Неверный exception");
 
-        assertInstanceOf(PersistentObjectException.class, exception.getCause(), "Неверный exception");
+        assertInstanceOf(PersistentObjectException.class, exception.getCause(),
+                "Неверный exception");
 
         log.info("Тест negativeTestingSave успешно выполнен");
     }
@@ -91,8 +93,8 @@ public class MentorTest {
         assertEquals(mentors.get(1).getLastName(), "Petrov", "Petrov");
         assertEquals(mentors.get(0).getId(), 1, "Id Ivanovskiy");
         assertEquals(mentors.get(1).getId(), 2, "Id Petrov");
-        assertEquals(mentors.get(0).getPhone(), 1, "phone Ivanovskiy");
-        assertEquals(mentors.get(1).getPhone(), 2, "phone Petrov");
+        assertEquals(mentors.get(0).getPhone(), "88005670011", "phone Ivanovskiy");
+        assertEquals(mentors.get(1).getPhone(), "23456787654", "phone Petrov");
 //        assertNotEquals(mentors.get(0).getPhone(), mentors.get(1).getPhone());      // почему не работает?
     }
 }
