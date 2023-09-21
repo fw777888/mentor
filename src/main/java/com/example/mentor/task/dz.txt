@@ -1,0 +1,11 @@
+
+-- file data sql 2 ментора
+-- адаптировать тест для 2 менторов,
+-- у обоих менторов сравнить индексы, имена, фамилии, телефоны
+-- дописать findAllMentor
+
+-- student + daoStudent +
+-- test findAllStudent + Controller
+
+разобрать метод save и написать для student
+

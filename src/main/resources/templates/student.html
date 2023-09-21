@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div th:each="student:${students}">
+  <h1 th:text="${student.getId()}">Student</h1>
+  <h1 th:text="${student.getName()}">Student</h1>
+  <h1 th:text="${student.getLastName()}">Student</h1>
+  <h1 th:text="${student.getPhone()}">Student</h1>
+</div>
+</body>
+</html>
