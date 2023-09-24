@@ -18,11 +18,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Sql({"/schema.sql", "/data.sql" })
 @DisplayName("Тестирование MentorDao")
-
 public class MentorTest {
+
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MentorTest.class);
     private final Dao<Long, Mentor> mentorDao;
-    private Mentor mentorJohn = Mentor
+    private final Mentor mentorJohn = Mentor
             .builder()
             .name("John")
             .lastName("Johnson")
@@ -34,15 +34,17 @@ public class MentorTest {
     public MentorTest(Dao<Long, Mentor> mentorDao) {
         this.mentorDao = mentorDao;
     }
+
     @DisplayName("Testing method save MentorDao")
     @Nested
     class SaveMethodDaoMentorTest {
+
         @Test
         @DisplayName("Позитивное тестирование save")
         void positiveTestingSave() {
             log.info("Тест positiveTestingSave начал выполнение");
-
             mentorDao.save(mentorJohn);
+
             final var mentorJohnOptional = mentorDao
                     .findBYId(3L)
                     .orElseThrow(() -> new NoSuchElementException(
@@ -68,8 +70,8 @@ public class MentorTest {
     @DisplayName("Негативное тестирование")
     void negativeTestingSave() {
         log.info("Тест negativeTestingSave начал выполнение");
-
         mentorJohn.setId(1L);
+
         final var exception =
                 assertThrows(InvalidDataAccessApiUsageException.class,
                         () -> mentorDao.save(mentorJohn), "Неверный exception");
@@ -95,6 +97,6 @@ public class MentorTest {
         assertEquals(mentors.get(1).getId(), 2, "Id Petrov");
         assertEquals(mentors.get(0).getPhone(), "88005670011", "phone Ivanovskiy");
         assertEquals(mentors.get(1).getPhone(), "23456787654", "phone Petrov");
-//        assertNotEquals(mentors.get(0).getPhone(), mentors.get(1).getPhone());      // почему не работает?
+        assertNotEquals(mentors.get(0).getPhone(), mentors.get(1).getPhone());      // почему не работает?
     }
 }

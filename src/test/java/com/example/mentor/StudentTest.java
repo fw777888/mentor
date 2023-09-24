@@ -20,9 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @Sql({"/schema.sql", "/data.sql"})
 @DisplayName("Тестирование StudentDao")
 public class StudentTest {
+
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(StudentTest.class);
     private final Dao<Long, Student> studentDao;
-    private Student studentVasya = Student
+    private final Student studentVasya = Student
             .builder()
             .name("Vasya")
             .lastName("Vasilev")
@@ -33,15 +34,18 @@ public class StudentTest {
     public StudentTest(Dao<Long, Student> studentDao) {
         this.studentDao = studentDao;
     }
+
     @DisplayName("Testing method save StudentDao")
     @Nested
     class SaveMethodDaoStudentTest {
+
         @Test
         @DisplayName("Positive testing save")
         void positiveTestingSave() {
             log.info("Test positiveTestingSave started");
 
             studentDao.save(studentVasya);
+
             final var studentVasyaOptional = studentDao
                     .findBYId(3L)
                     .orElseThrow(() -> new NoSuchElementException(
@@ -69,6 +73,7 @@ public class StudentTest {
         log.info("negative testing save started");
 
         studentVasya.setId(1L);
+
         final var exception =
                 assertThrows(InvalidDataAccessApiUsageException.class,
                 () -> studentDao.save(studentVasya), "Incorrect exception");
@@ -85,6 +90,7 @@ public class StudentTest {
         log.info("positive find all test started");
 
         List<Student> students = studentDao.findAll();
+
         assertEquals(students.size(), 2);
         assertEquals(students.get(0).getId(), 1, "Id Anton Antonov" );
         assertEquals(students.get(1).getId(), 2, "Id Mihail Mihailov" );
